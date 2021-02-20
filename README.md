@@ -21,4 +21,14 @@ Four different databases/datasets were used here:
 3. All the [RefSeq](https://www.ncbi.nlm.nih.gov/refseq/) archaeal genomes.
 4. All the [GeneBank](https://www.ncbi.nlm.nih.gov/genbank/) archaeal genomes.
 
+#### Finding and isolating *amoA* genes
 
+The 3 nucleotides and genomes datasets were BLAST against Alves et *al*. database. Then, the sequence of positive matches were extracted using Samtools.
+
+#### Annotation of *amoA* genes
+
+The newly found *amoA* sequences were then annotated based on Alves et *al*. database, using QIIME1, as recommanded by the authors.
+
+#### Extraction of 16S rRNA genes
+
+For each sequence that contains a *amoA* gene, 16S rRNA gene was extracted (if present). 16S rRNA genes were detected with Barrnap and then the sequences were extraction with Samtools.
