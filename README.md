@@ -42,4 +42,15 @@ Then, all 16S rRNA and *amoA* pairs (i.e. coming from the same original sequence
 
 #### Merging the outcome of the 3 analyses
 
-Finally, the results from all 3 runs were merged together 
+Finally, the results from all 3 runs were merged together.
+
+### Dependecies
+
+Here is the list of the softwares used for this pipeline. The versions that were used for this study are indicated in parenthesis:
+
+* [BLAST+](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download) (v.2.10.1)
+* [Samtools](http://www.htslib.org/) (v.1.8)
+* [QIIME](http://qiime.org/) (v.1.9.1)
+* [Barrnap](https://github.com/tseemann/barrnap) (v.0.9)
+* [ncbi-genome-download](https://github.com/kblin/ncbi-genome-download) (v.0.2.6)
+* [vsearch](https://github.com/torognes/vsearch) (v2.7.1)
