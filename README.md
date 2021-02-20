@@ -12,14 +12,17 @@ This work will be soon published in an article entitled *Linking 16S rRNA gene t
 
 The approach used here is to screen genomic databases in order to find genomes, contigs or nucleotides that contain both a 16S rRNA and a *amoA* gene. Here are the main steps of the pipeline:
 
-#### Databases
+#### Datasets and Database
 
-Four different databases/datasets were used here:
+Three different datasets were used here:
 
-1. The one about archaeal *amoA* phylogeny, accessible from the supplementary information of the article of [Alves et *al*., 2018](https://www.nature.com/articles/s41467-018-03861-1). This database is used to detecte and annotate all *amoA* sequences found in the 3 next datasets.
-2. All [NCBI](https://www.ncbi.nlm.nih.gov/) sequences annotated as Archaea and that are at least 2000 bp long.
-3. All the [RefSeq](https://www.ncbi.nlm.nih.gov/refseq/) archaeal genomes.
-4. All the [GeneBank](https://www.ncbi.nlm.nih.gov/genbank/) archaeal genomes.
+1. All [NCBI](https://www.ncbi.nlm.nih.gov/) sequences annotated as Archaea and that are at least 2000 bp long.
+2. All the [RefSeq](https://www.ncbi.nlm.nih.gov/refseq/) archaeal genomes.
+3. All the [GeneBank](https://www.ncbi.nlm.nih.gov/genbank/) archaeal genomes.
+
+Each dataset was analysed separately.
+
+The *amoA* database from [Alves et *al*., 2018](https://www.nature.com/articles/s41467-018-03861-1) (accessible from the supplementary information) was used to detect and annotate *amoA* genes from the 3 datasets.
 
 #### Finding and isolating *amoA* genes
 
@@ -31,4 +34,12 @@ The newly found *amoA* sequences were then annotated based on Alves et *al*. dat
 
 #### Extraction of 16S rRNA genes
 
-For each sequence that contains a *amoA* gene, 16S rRNA gene was extracted (if present). 16S rRNA genes were detected with Barrnap and then the sequences were extraction with Samtools.
+For each sequence that contains an *amoA* gene, 16S rRNA gene was extracted (if present). 16S rRNA genes were detected with Barrnap and then the sequences were extraction with Samtools.
+
+#### Merging 16S rRNA and *amoA* sequences
+
+Then, all 16S rRNA and *amoA* pairs (i.e. coming from the same original sequence) were reunited using an in-house R script.
+
+#### Merging the outcome of the 3 analyses
+
+Finally, the results from all 3 runs were merged together 
