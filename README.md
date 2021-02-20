@@ -22,6 +22,8 @@ Three different datasets were used here:
 
 Each dataset was analysed separately.
 
+For this study, dataset 1 was downloaded the 31st Oct. 2020, and datasets 2 and 3 were downloaded on the 7th of Nov. 2020.
+
 The *amoA* database from [Alves et *al*., 2018](https://www.nature.com/articles/s41467-018-03861-1) (accessible from the supplementary information) was used to detect and annotate *amoA* genes from the 3 datasets.
 
 #### Finding and isolating *amoA* genes
@@ -54,3 +56,26 @@ Here is the list of the softwares used for this pipeline. The versions that were
 * [Barrnap](https://github.com/tseemann/barrnap) (v.0.9)
 * [ncbi-genome-download](https://github.com/kblin/ncbi-genome-download) (v.0.2.6)
 * [vsearch](https://github.com/torognes/vsearch) (v2.7.1)
+
+### Database / Datasets download
+
+#### Alves *et al*. database
+
+#### NCBI nucleotides sequences
+
+Sequences were directly downloaded from this website: https://www.ncbi.nlm.nih.gov/nuccore, using as search query `(Archaea[Organism]) AND 2000:99999999999999[Sequence Length]`. The ouput was then dowloaded using `Send to file > FASTA format`. The sequences were downloaded on the 31st Oct. 2020. 
+
+Save it as "1-raw_data/ncbi_nucl_arch_min2000.fasta"
+
+grep "^>" 1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
+#335202
+
+#### RefSeq archaeal genomes
+
+#### GeneBank archaeal genomes
+
+### Detailed script (and files)
+
+### Relevant output files
+
+### How to annotate your Thaumarchaeota 16S rRNA sequences with this database?
