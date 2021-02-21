@@ -2,17 +2,17 @@
 
 Script written by alexandre.bagnoud@gmail.com in 2018.
 
-### Introduction
+## Introduction
 
 This bioinformatic pipeline aims at linking 16S rRNA sequences of [Thaumarchaeota](https://en.wikipedia.org/wiki/Thaumarchaeota) (i.e. ammonia-oxidizing archaea, or AOA) to *amoA* phylogeny. *amoA* is the A subunit of the [ammonia-monooxygenase](https://en.wikipedia.org/wiki/Ammonia_monooxygenase) and it is used as a genetic marker to detect AOA in environments. It's phylogeny, unlike the one of 16S rRNA of Thaumarchaeota, is finely characterised and contains useful information about their distribution in environments, as described in [Alves et *al*., 2018](https://www.nature.com/articles/s41467-018-03861-1). By merging both phylogeny, we hope to transfer this useful information from the *amoA* phylogeny to the 16S rRNA phylogeny.
 
 This work will be soon published in an article entitled *Linking 16S rRNA gene to amoA gene taxonomy reveals environmental distribution of ammonia-oxidizing archaea clades in peatland soils* by Haitao Wang, Alexandre Bagnoud, Rafael I. Ponce-Toledo, Melina Kerou, Micha Weil, Christa Schleper and Tim Urich.
 
-### Approach
+## Approach
 
 The approach used here is to screen genomic databases in order to find genomes, contigs or nucleotides that contain both a 16S rRNA and a *amoA* gene. Here are the main steps of the pipeline:
 
-#### Datasets and Database
+### Datasets and Database
 
 Three different datasets were used here:
 
@@ -26,27 +26,27 @@ For this study, dataset 1 was downloaded the 31st Oct. 2020, and datasets 2 and 
 
 The *amoA* database from [Alves et *al*., 2018](https://www.nature.com/articles/s41467-018-03861-1) (accessible from the supplementary information) was used to detect and annotate *amoA* genes from the 3 datasets.
 
-#### Finding and isolating *amoA* genes
+### Finding and isolating *amoA* genes
 
 The 3 nucleotides and genomes datasets were BLAST against Alves et *al*. database. Then, the sequence of positive matches were extracted using Samtools.
 
-#### Annotation of *amoA* genes
+### Annotation of *amoA* genes
 
 The newly found *amoA* sequences were then annotated based on Alves et *al*. database, using QIIME1, as recommanded by the authors.
 
-#### Extraction of 16S rRNA genes
+### Extraction of 16S rRNA genes
 
 For each sequence that contains an *amoA* gene, 16S rRNA gene was extracted (if present). 16S rRNA genes were detected with Barrnap and then the sequences were extraction with Samtools.
 
-#### Merging 16S rRNA and *amoA* sequences
+### Merging 16S rRNA and *amoA* sequences
 
 Then, all 16S rRNA and *amoA* pairs (i.e. coming from the same original sequence) were reunited using an in-house R script.
 
-#### Merging the outcome of the 3 analyses
+### Merging the outcome of the 3 analyses
 
 Finally, the results from all 3 runs were merged together using an in-house R script.
 
-### Dependecies
+## Dependecies
 
 Here is the list of the softwares used for this pipeline. The versions that were used for this study are indicated in parenthesis:
 
@@ -57,9 +57,9 @@ Here is the list of the softwares used for this pipeline. The versions that were
 * [ncbi-genome-download](https://github.com/kblin/ncbi-genome-download) (v.0.2.6)
 * [vsearch](https://github.com/torognes/vsearch) (v2.7.1)
 
-### Database / Datasets download
+## Database / Datasets download
 
-#### Alves *et al*. database
+### Alves *et al*. database
 
 The *amoA* database was downoladed from the supplementary informatio of Alves *et al*. (https://doi.org/10.1038/s41467-018-03861-1). Supplementary files 1 et 3 were downloaded and unzipped. The files `AamoA.db_an96.aln_tax.annotated.fasta` (supplementary data 1), `AamoA.db_nr.aln.fasta`, and `AamoA.db_nr.aln_taxonomy_qiime.txt` (in the `AamoA.db_nr_qiime.mothur/` folder of supplementary data 3) were moved to `0-databases/`.
 
@@ -68,7 +68,7 @@ A BLAST database was then made using BLAST+ using this command line:
 makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -out 0-databases/AamoA.db_an96.aln_tax.annotated
 ```
 
-#### NCBI nucleotides sequences
+### NCBI nucleotides sequences
 
 Sequences were directly downloaded from this website: https://www.ncbi.nlm.nih.gov/nuccore, using as search query `(Archaea[Organism]) AND 2000:99999999999999[Sequence Length]`. The ouput was then dowloaded using `Send to file > FASTA format`. The sequences were downloaded on the 31st Oct. 2020. 
 
@@ -79,7 +79,7 @@ grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
 > 335202
 ```
 
-#### RefSeq archaeal genomes
+### RefSeq archaeal genomes
 
 The archaeal RefSeq genomes were downloaded with ncbi-genome-download on the 7th of November 2020, using this commande line:
 
@@ -102,7 +102,7 @@ for file in 1-raw_data/arch_genomes_refseq/refseq/archaea/GCF_*/*.fna.gz; do
 done
 ```
 
-#### GeneBank archaeal genomes
+### GeneBank archaeal genomes
 
 GeneBank genomes were downloaded follwing the instructions  of this github repository : https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI. The genomes were downloaded on the 7th of November 2020 using these command lines:
 
@@ -139,11 +139,11 @@ ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
 > 5737
 ```
 
-### Detailed script (and files)
+## Detailed script (and files)
 
 Then, for each dataset, the following script was applied. Each command must be executed from the dataset folder `1-ncbi_arch_2000/`, `2-refseq_arch_genomes/`, or `3-genbank_arch_genomes/`.
 
-#### Blast amoa genes
+### Blast amoa genes
 ```
 mkdir 2-amoa_blast
 ```
@@ -166,7 +166,7 @@ Extract list of genomes that harbor an amoA:
 ```
 less 2-amoa_blast/3-cat_blast.txt | cut -f13 | sort -u > 2-amoa_blast/4-amoa_genome_list.txt
 ```
-#### Get amoA sequences
+### Get amoA sequences
 ```
 mkdir 3-amoa_seqs
 ```
@@ -196,7 +196,7 @@ assign_taxonomy.py -i 3-amoa_seqs/1-amoa.fasta -t $qiime_tax -r $db_seq --simila
 source deactivate qiime1
 ```
 
-#### Extract 16S from amoA genomes
+### Extract 16S from amoA genomes
 ```
 mkdir 4-16S_genes
 ```
@@ -230,7 +230,7 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 ```
 
 
-#### Run the corresponding in-house R script to merge all these data and output annotations files
+### Run the corresponding in-house R script to merge all these data and output annotations files
 ```
 Rscript ./merge_5df.R
 
@@ -238,6 +238,6 @@ rm 3-16S_genes/1-*
 rm 3-16S_genes/2-*
 ```
 
-### Relevant output files
+## Relevant output files
 
-### How to annotate your Thaumarchaeota 16S rRNA sequences with this database?
+## How to annotate your Thaumarchaeota 16S rRNA sequences with this database?
