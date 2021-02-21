@@ -247,6 +247,8 @@ One hase to run `script2_amoa_16S_from_contigs.R` for merging data from the NCBI
 
 Putting together all 16S from the 3 datasets:
 ```sh
+mkdir 4-concatenated_runs/
+cd 4-concatenated_runs/
 cat ../*/5-annotation_files/1-16S_db.fasta > 1-16S_3runs_3.fasta
 ```
 
@@ -265,7 +267,7 @@ Putting together all QIIME annotations from the 3 datasets:
 cat ../*/5-annotation_files/2-16S_amoa_tax_qiime.txt > 4-16S_amoa_tax_qiime_3runs.txt
 ```
 
-Subset the unique annotations, using R:
+Subsetting the unique annotations, using R:
 ```R
 # Import files
 header <- read.table("3-unique_16S_header_list.txt", header = FALSE)
@@ -281,11 +283,11 @@ m <- merge(header, annot2)
 
 write.table(m, "5-unique_16S_amoa_tax_qiime_3runs.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
 ```
-Finally, concatenate all *amoA* sequences from the 3 dataset:
+Finally, concatenating all *amoA* sequences from the 3 dataset:
 ```sh
 cat ../*/3-amoa_seqs/1-amoa.fasta > 6_amoa_seqs_3runs.fasta
 ```
 
-## Relevant output files
-
 ## How to annotate your Thaumarchaeota 16S rRNA sequences with this database?
+
+
