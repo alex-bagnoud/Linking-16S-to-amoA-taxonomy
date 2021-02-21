@@ -1,4 +1,4 @@
-# linking-16S-to-amoA-taxonomy
+# Linking-16S-to-amoA-taxonomy
 
 Script written by alexandre.bagnoud@gmail.com in 2018.
 
@@ -81,23 +81,42 @@ grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
 
 #### RefSeq archaeal genomes
 
+The archaeal RefSeq genomes were downloaded with ncbi-genome-download on the 7th of November 2020, using this commande line:
 
 ```
-ncbi-genome-download --format fasta --assembly-level all --section refseq --output-folder 1-raw_data/arch_genomes_refseq archaea
+mkdir 2-refseq_arch_genomes/
+cd 2-refseq_arch_genomes/
+ncbi-genome-download archaea --format fasta --assembly-level all --section refseq --output-folder 1-raw_data/arch_genomes_refseq archaea
 ```
 
-Downloaded on the 7th of November 2020
+Then, genomes were unarchived using this script:
+```
+mkdir 1-raw_data/arch_genomes_refseq_unarchived
+
+for file in 1-raw_data/arch_genomes_refseq/refseq/archaea/GCF_*/*.fna.gz; do
+	echo $file
+	id=$(echo $file | cut -d "/" -f5)
+	echo $id
+	cp $file 1-raw_data/arch_genomes_refseq_unarchived/${id}.fna.gz
+	gzip -d 1-raw_data/arch_genomes_refseq_unarchived/${id}.fna.gz
+done
+```
 
 #### GeneBank archaeal genomes
 
-#https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI
+GeneBank genomes were downloaded follwing the instructions  of this github repository : https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI. The genomes were downloaded on the 7th of November 2020 using these command lines:
 
-# Download the list of archeal genomes on NCBI on 16th June 2018
-mkdir 1-raw_data
+```
+# Create folders
+mkdir 3-genbank_arch_genomes/
+cd 3-genbank_arch_genomes/
+mkdir 1-raw_data/
+
+# Download the list of archeal genomes
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/archaea/assembly_summary.txt
 mv assembly_summary.txt 1-raw_data/1-assembly_summary.txt
 
-# how many genomes?
+# How many genomes are there?
 wc -l 1-raw_data/1-assembly_summary.txt
 5738
 
@@ -111,8 +130,8 @@ for next in $(cat 1-raw_data/2-ftp_links.txt); do wget -P 1-raw_data/3-archael_g
 
 # How many genomes were downloaded?
 ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
-# 5737
-
+> 5737
+```
 
 ### Detailed script (and files)
 
