@@ -106,44 +106,50 @@ done
 
 GeneBank genomes were downloaded follwing the instructions  of this github repository : https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI. The genomes were downloaded on the 7th of November 2020 using these command lines:
 
+Create folders:
 ```
-# Create folders
 mkdir 3-genbank_arch_genomes/
 cd 3-genbank_arch_genomes/
 mkdir 1-raw_data/
+```
 
-# Download the list of archeal genomes
+Download the list of archeal genomes:
+```
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/archaea/assembly_summary.txt
 mv assembly_summary.txt 1-raw_data/1-assembly_summary.txt
-
-# How many genomes are there?
+```
+How many genomes are there?
+```
 wc -l 1-raw_data/1-assembly_summary.txt
 > 5738
-
-# Get the ftp links
+```
+Get the ftp links
+```
 less 1-raw_data/1-assembly_summary.txt | cut -f20 > 1-raw_data/2-ftp_links.txt
-
-# Download them all!
+```
+Download them all!
+```
 mkdir 1-raw_data/3-archaeal_genomes
 
 for next in $(cat 1-raw_data/2-ftp_links.txt); do wget -P 1-raw_data/3-archael_genomes "$next"/*genomic.fna.gz; done
-
-# How many genomes were downloaded?
+```
+How many genomes were downloaded?
+```
 ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
 > 5737
 ```
 
 ### Detailed script (and files)
 
-Then, for each dataset, the following script was applied.
+Then, for each dataset, the following script was applied. Each command must be executed from the dataset folder `1-ncbi_arch_2000/`, `2-refseq_arch_genomes/`, or `3-genbank_arch_genomes/`.
 
 #### Blast amoa genes
 ```
 mkdir 2-amoa_blast
+```
+This script blast each genome in the folder to the archaeal amoA db and keeps the best hit. It adds to the last line of the blase output file the path to the genome.
 
-# This script blast each genome in the folder to the archaeal amoA db and keeps the best hit
-# It adds to the last line of the blase output file the path to the genome
-
+```
 for file in 1-raw_data/arch_genomes_refseq_unarchived/*.fna; do
 	id=$(echo ${file##*\/} | cut -d "." -f1)
 	echo $id
@@ -155,17 +161,17 @@ done
 cat 2-amoa_blast/2-* > 2-amoa_blast/3-cat_blast.txt
 rm 2-amoa_blast/1-*
 rm 2-amoa_blast/2-*
-
-# Extract list of genomes that harbor an amoA
-
+```
+Extract list of genomes that harbor an amoA:
+```
 less 2-amoa_blast/3-cat_blast.txt | cut -f13 | sort -u > 2-amoa_blast/4-amoa_genome_list.txt
 ```
 #### Get amoA sequences
 ```
 mkdir 3-amoa_seqs
-
-# Extract amoA sequences with Samtools
-
+```
+Extract amoA sequences with Samtools:
+```
 while read p; do
 	echo $p
 	start=$(echo $p | cut -d " " -f7)
@@ -178,9 +184,9 @@ while read p; do
 done < 2-amoa_blast/3-cat_blast.txt
 
 rm 1-raw_data/arch_genomes_refseq_unarchived/*.fna.fai
-
-# Annotate them using Alves et al. database and QIIME 1
-
+```
+Annotate them using Alves *et al*. database and QIIME1:
+```
 db_seq="../0-databases/AamoA.db_nr.aln.fasta"
 qiime_tax="../0-databases/AamoA.db_nr.aln_taxonomy_qiime.txt"
 
@@ -193,18 +199,18 @@ source deactivate qiime1
 #### Extract 16S from amoA genomes
 ```
 mkdir 4-16S_genes
-
-# Find 16S rRNA genes with Barrnap
-
+```
+Find 16S rRNA genes with Barrnap:
+```
 while read p; do
 	id=$(echo ${p##*\/} | sed 's/.fna//')
 	barrnap $p --kingdom arc| grep 16S > 4-16S_genes/1-${id}_barrnap.txt
 done < 2-amoa_blast/4-amoa_genome_list.txt
 
 find 4-16S_genes/ -size 0 -delete
-
-# Extract 16S rRNA sequences with Samtools
-
+```
+Extract 16S rRNA sequences with Samtools:
+```
 for file in 4-16S_genes/1-*; do
 	echo $file
 	id=$(echo $file | cut -d "-" -f3 | sed 's/_barrnap.txt//')
@@ -224,7 +230,7 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 ```
 
 
-#### Run 'merge_5df.R' to merge all these data and output annotations files
+#### Run the corresponding in-house R script to merge all these data and output annotations files
 ```
 Rscript ./merge_5df.R
 
