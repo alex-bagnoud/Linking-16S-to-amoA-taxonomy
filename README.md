@@ -236,9 +236,54 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 ```
 
 
-### Run the corresponding in-house R script to merge all the data and output annotations files
+### Merging all the data and output annotations files
+This exectuable in-house R script merge the sequence and annotation files.
 ```
-Rscript ../scripts/script2_amoa_16S_from_*.R
+Rscript ../scripts/script2_amoa_16S_from_genomes.R
+```
+One hase to run `script2_amoa_16S_from_contigs.R` for merging data from the NCBI nucleotide dataset.
+
+### Concatenating outputs from the 3 datasets
+
+Putting together all 16S from the 3 datasets:
+```
+cat ../*/5-annotation_files/1-16S_db.fasta > 1-16S_3runs_3.fasta
+```
+
+Finding unique 16S rRNA genes:
+```
+vsearch --derep_fulllength 1-16S_3runs_3.fasta --output 2-unique_16S.fasta
+```
+
+List of unique 16S sequences headers:
+```
+grep "^>" 2-unique_16S.fasta | sed 's/>//' > 3-unique_16S_header_list.txt
+```
+
+Putting together all QIIME annotations from the 3 datasets:
+```
+cat ../*/5-annotation_files/2-16S_amoa_tax_qiime.txt > 4-16S_amoa_tax_qiime_3runs.txt
+```
+
+Subset the unique annotations, using R:
+```
+# Import files
+header <- read.table("3-unique_16S_header_list.txt", header = FALSE)
+annot <- read.table("4-16S_amoa_tax_qiime_3runs.txt", header = FALSE, sep = "\t")
+
+# Remove duplicated entries in the annotations
+annot2 <- annot[!duplicated(annot$V1),]
+
+# merge df
+m <- merge(header, annot2)
+
+# Export new file
+
+write.table(m, "5-unique_16S_amoa_tax_qiime_3runs.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
+```
+Finally, concatenate all *amoA* sequences from the 3 dataset:
+```
+cat ../*/3-amoa_seqs/1-amoa.fasta > 6_amoa_seqs_3runs.fasta
 ```
 
 ## Relevant output files
