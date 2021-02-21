@@ -44,7 +44,7 @@ Then, all 16S rRNA and *amoA* pairs (i.e. coming from the same original sequence
 
 #### Merging the outcome of the 3 analyses
 
-Finally, the results from all 3 runs were merged together.
+Finally, the results from all 3 runs were merged together using an in-house R script.
 
 ### Dependecies
 
@@ -63,7 +63,7 @@ Here is the list of the softwares used for this pipeline. The versions that were
 
 The *amoA* database was downoladed from the supplementary informatio of Alves *et al*. (https://doi.org/10.1038/s41467-018-03861-1). Supplementary files 1 et 3 were downloaded and unzipped. The files `AamoA.db_an96.aln_tax.annotated.fasta` (supplementary data 1), `AamoA.db_nr.aln.fasta`, and `AamoA.db_nr.aln_taxonomy_qiime.txt` (in the `AamoA.db_nr_qiime.mothur/` folder of supplementary data 3) were moved to `0-databases/`.
 
-A BLAST database was then made using BLAST+ using this command line
+A BLAST database was then made using BLAST+ using this command line:
 ```
 makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -out 0-databases/AamoA.db_an96.aln_tax.annotated
 ```
@@ -81,13 +81,38 @@ grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
 
 #### RefSeq archaeal genomes
 
+
 ```
 ncbi-genome-download --format fasta --assembly-level all --section refseq --output-folder 1-raw_data/arch_genomes_refseq archaea
 ```
 
-
+Downloaded on the 7th of November 2020
 
 #### GeneBank archaeal genomes
+
+#https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI
+
+# Download the list of archeal genomes on NCBI on 16th June 2018
+mkdir 1-raw_data
+wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/archaea/assembly_summary.txt
+mv assembly_summary.txt 1-raw_data/1-assembly_summary.txt
+
+# how many genomes?
+wc -l 1-raw_data/1-assembly_summary.txt
+5738
+
+# Get the ftp links
+less 1-raw_data/1-assembly_summary.txt | cut -f20 > 1-raw_data/2-ftp_links.txt
+
+# Download them all!
+mkdir 1-raw_data/3-archaeal_genomes
+
+for next in $(cat 1-raw_data/2-ftp_links.txt); do wget -P 1-raw_data/3-archael_genomes "$next"/*genomic.fna.gz; done
+
+# How many genomes were downloaded?
+ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
+# 5737
+
 
 ### Detailed script (and files)
 
