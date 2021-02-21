@@ -101,6 +101,11 @@ for file in 1-raw_data/arch_genomes_refseq/refseq/archaea/GCF_*/*.fna.gz; do
 	gzip -d 1-raw_data/arch_genomes_refseq_unarchived/${id}.fna.gz
 done
 ```
+How many genomes were dowloaded?
+```
+ls -l 1-raw_data/arch_genomes_refseq_unarchived/ | wc -l
+> 1106
+```
 
 ### GeneBank archaeal genomes
 
@@ -232,7 +237,7 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 
 ### Run the corresponding in-house R script to merge all the data and output annotations files
 ```
-Rscript 0-scripts/*.R
+Rscript 0-scripts/script2_amoa_16S_from_*.R
 ```
 
 ## Relevant output files
