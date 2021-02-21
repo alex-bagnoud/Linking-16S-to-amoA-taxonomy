@@ -1,4 +1,5 @@
-
+# This 'sh' file is not executable
+# Please copy and paste each of the command in a UNIX terminal.
 
 ## 1) Download NCBI nucleotides sequences
 
