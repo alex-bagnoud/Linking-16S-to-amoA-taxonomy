@@ -32,7 +32,7 @@ The 3 nucleotides and genomes datasets were BLAST against Alves et *al*. databas
 
 ### Annotation of *amoA* genes
 
-The newly found *amoA* sequences were then annotated based on Alves et *al*. database, using QIIME1, as recommanded by the authors.
+The newly found *amoA* sequences were then annotated based on Alves et *al*. database, using QIIME1, as recommended by the authors.
 
 ### Extraction of 16S rRNA genes
 
