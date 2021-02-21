@@ -230,12 +230,9 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 ```
 
 
-### Run the corresponding in-house R script to merge all these data and output annotations files
+### Run the corresponding in-house R script to merge all the data and output annotations files
 ```
-Rscript ./merge_5df.R
-
-rm 3-16S_genes/1-*
-rm 3-16S_genes/2-*
+Rscript 0-scripts/*.R
 ```
 
 ## Relevant output files
