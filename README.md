@@ -67,7 +67,7 @@ A BLAST database was then made using BLAST+ using this command line:
 ```sh
 makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -out 0-databases/AamoA.db_an96.aln_tax.annotated
 ```
-
+(Unless specified, the code presented here is written in bash.)
 ### NCBI nucleotides sequences
 
 Sequences were directly downloaded from this website: https://www.ncbi.nlm.nih.gov/nuccore, using as search query `(Archaea[Organism]) AND 2000:99999999999999[Sequence Length]`. The ouput was then dowloaded using `Send to file > FASTA format`. The sequences were downloaded on the 31st Oct. 2020. 
