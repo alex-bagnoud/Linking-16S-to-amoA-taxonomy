@@ -238,7 +238,7 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 
 ### Run the corresponding in-house R script to merge all the data and output annotations files
 ```
-Rscript 0-scripts/script2_amoa_16S_from_*.R
+Rscript ../scripts/script2_amoa_16S_from_*.R
 ```
 
 ## Relevant output files
