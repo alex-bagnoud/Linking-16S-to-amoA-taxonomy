@@ -147,7 +147,7 @@ ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
 ## Detailed script (and files)
 
 Then, for each dataset, the following script was applied. Each command must be executed from the dataset folder `1-ncbi_arch_2000/`, `2-refseq_arch_genomes/`, or `3-genbank_arch_genomes/`.
-The script presented below is the one that was specifically used to analyse RefSeq genomes. The two other dataset were analysed with script slightly different. All 3 scripts can be found in this [folder](script/).
+The script presented below is the one that was specifically used to analyse RefSeq genomes. The two other dataset were analysed with script slightly different. All 3 scripts can be found in this [folder](scripts/).
 
 ### Blast amoa genes
 ```
