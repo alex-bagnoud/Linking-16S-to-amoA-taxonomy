@@ -64,7 +64,7 @@ Here is the list of the softwares used for this pipeline. The versions that were
 The *amoA* database was downoladed from the supplementary informatio of Alves *et al*. (https://doi.org/10.1038/s41467-018-03861-1). Supplementary files 1 et 3 were downloaded and unzipped. The files `AamoA.db_an96.aln_tax.annotated.fasta` (supplementary data 1), `AamoA.db_nr.aln.fasta`, and `AamoA.db_nr.aln_taxonomy_qiime.txt` (in the `AamoA.db_nr_qiime.mothur/` folder of supplementary data 3) were moved to `0-databases/`.
 
 A BLAST database was then made using BLAST+ using this command line:
-```
+```bash
 makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -out 0-databases/AamoA.db_an96.aln_tax.annotated
 ```
 
@@ -266,7 +266,7 @@ cat ../*/5-annotation_files/2-16S_amoa_tax_qiime.txt > 4-16S_amoa_tax_qiime_3run
 ```
 
 Subset the unique annotations, using R:
-```
+```R
 # Import files
 header <- read.table("3-unique_16S_header_list.txt", header = FALSE)
 annot <- read.table("4-16S_amoa_tax_qiime_3runs.txt", header = FALSE, sep = "\t")
