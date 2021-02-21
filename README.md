@@ -64,7 +64,7 @@ Here is the list of the softwares used for this pipeline. The versions that were
 The *amoA* database was downoladed from the supplementary informatio of Alves *et al*. (https://doi.org/10.1038/s41467-018-03861-1). Supplementary files 1 et 3 were downloaded and unzipped. The files `AamoA.db_an96.aln_tax.annotated.fasta` (supplementary data 1), `AamoA.db_nr.aln.fasta`, and `AamoA.db_nr.aln_taxonomy_qiime.txt` (in the `AamoA.db_nr_qiime.mothur/` folder of supplementary data 3) were moved to `0-databases/`.
 
 A BLAST database was then made using BLAST+ using this command line:
-```bash
+```sh
 makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -out 0-databases/AamoA.db_an96.aln_tax.annotated
 ```
 
@@ -74,7 +74,7 @@ Sequences were directly downloaded from this website: https://www.ncbi.nlm.nih.g
 
 The fasta file was save as `1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta`. This file containes 335,202 sequences.
 
-```
+```sh
 grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
 > 335202
 ```
@@ -83,14 +83,14 @@ grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
 
 The archaeal RefSeq genomes were downloaded with ncbi-genome-download on the 7th of November 2020, using this commande line:
 
-```
+```sh
 mkdir 2-refseq_arch_genomes/
 cd 2-refseq_arch_genomes/
 ncbi-genome-download archaea --format fasta --assembly-level all --section refseq --output-folder 1-raw_data/arch_genomes_refseq archaea
 ```
 
 Then, genomes were unarchived using this script:
-```
+```sh
 mkdir 1-raw_data/arch_genomes_refseq_unarchived
 
 for file in 1-raw_data/arch_genomes_refseq/refseq/archaea/GCF_*/*.fna.gz; do
@@ -102,7 +102,7 @@ for file in 1-raw_data/arch_genomes_refseq/refseq/archaea/GCF_*/*.fna.gz; do
 done
 ```
 How many genomes were dowloaded?
-```
+```sh
 ls -l 1-raw_data/arch_genomes_refseq_unarchived/ | wc -l
 > 1106
 ```
@@ -112,34 +112,34 @@ ls -l 1-raw_data/arch_genomes_refseq_unarchived/ | wc -l
 GeneBank genomes were downloaded follwing the instructions  of this github repository : https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI. The genomes were downloaded on the 7th of November 2020 using these command lines:
 
 Create folders:
-```
+```sh
 mkdir 3-genbank_arch_genomes/
 cd 3-genbank_arch_genomes/
 mkdir 1-raw_data/
 ```
 
 Download the list of archeal genomes:
-```
+```sh
 wget ftp://ftp.ncbi.nlm.nih.gov/genomes/genbank/archaea/assembly_summary.txt
 mv assembly_summary.txt 1-raw_data/1-assembly_summary.txt
 ```
 How many genomes are there?
-```
+```sh
 wc -l 1-raw_data/1-assembly_summary.txt
 > 5738
 ```
 Get the ftp links
-```
+```sh
 less 1-raw_data/1-assembly_summary.txt | cut -f20 > 1-raw_data/2-ftp_links.txt
 ```
 Download them all!
-```
+```sh
 mkdir 1-raw_data/3-archaeal_genomes
 
 for next in $(cat 1-raw_data/2-ftp_links.txt); do wget -P 1-raw_data/3-archael_genomes "$next"/*genomic.fna.gz; done
 ```
 How many genomes were downloaded?
-```
+```sh
 ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
 > 5737
 ```
@@ -150,12 +150,12 @@ Then, for each dataset, the following script was applied. Each command must be e
 The script presented below is the one that was specifically used to analyse RefSeq genomes. The two other dataset were analysed with script slightly different. All 3 scripts can be found in this [folder](scripts/).
 
 ### Blast amoa genes
-```
+```sh
 mkdir 2-amoa_blast
 ```
 This script blast each genome in the folder to the archaeal amoA db and keeps the best hit. It adds to the last line of the blase output file the path to the genome.
 
-```
+```sh
 for file in 1-raw_data/arch_genomes_refseq_unarchived/*.fna; do
 	id=$(echo ${file##*\/} | cut -d "." -f1)
 	echo $id
@@ -169,15 +169,15 @@ rm 2-amoa_blast/1-*
 rm 2-amoa_blast/2-*
 ```
 Extract list of genomes that harbor an amoA:
-```
+```sh
 less 2-amoa_blast/3-cat_blast.txt | cut -f13 | sort -u > 2-amoa_blast/4-amoa_genome_list.txt
 ```
 ### Get amoA sequences
-```
+```sh
 mkdir 3-amoa_seqs
 ```
 Extract amoA sequences with Samtools:
-```
+```sh
 while read p; do
 	echo $p
 	start=$(echo $p | cut -d " " -f7)
@@ -192,7 +192,7 @@ done < 2-amoa_blast/3-cat_blast.txt
 rm 1-raw_data/arch_genomes_refseq_unarchived/*.fna.fai
 ```
 Annotate them using Alves *et al*. database and QIIME1:
-```
+```sh
 db_seq="../0-databases/AamoA.db_nr.aln.fasta"
 qiime_tax="../0-databases/AamoA.db_nr.aln_taxonomy_qiime.txt"
 
@@ -203,11 +203,11 @@ source deactivate qiime1
 ```
 
 ### Extract 16S from amoA genomes
-```
+```sh
 mkdir 4-16S_genes
 ```
 Find 16S rRNA genes with Barrnap:
-```
+```sh
 while read p; do
 	id=$(echo ${p##*\/} | sed 's/.fna//')
 	barrnap $p --kingdom arc| grep 16S > 4-16S_genes/1-${id}_barrnap.txt
@@ -216,7 +216,7 @@ done < 2-amoa_blast/4-amoa_genome_list.txt
 find 4-16S_genes/ -size 0 -delete
 ```
 Extract 16S rRNA sequences with Samtools:
-```
+```sh
 for file in 4-16S_genes/1-*; do
 	echo $file
 	id=$(echo $file | cut -d "-" -f3 | sed 's/_barrnap.txt//')
@@ -238,7 +238,7 @@ cat 4-16S_genes/2* > 4-16S_genes/3-all_16S_seq.fasta
 
 ### Merging all the data and output annotations files
 This exectuable in-house R script merge the sequence and annotation files.
-```
+```sh
 Rscript ../scripts/script2_amoa_16S_from_genomes.R
 ```
 One hase to run `script2_amoa_16S_from_contigs.R` for merging data from the NCBI nucleotide dataset.
@@ -246,22 +246,22 @@ One hase to run `script2_amoa_16S_from_contigs.R` for merging data from the NCBI
 ### Concatenating outputs from the 3 datasets
 
 Putting together all 16S from the 3 datasets:
-```
+```sh
 cat ../*/5-annotation_files/1-16S_db.fasta > 1-16S_3runs_3.fasta
 ```
 
 Finding unique 16S rRNA genes:
-```
+```sh
 vsearch --derep_fulllength 1-16S_3runs_3.fasta --output 2-unique_16S.fasta
 ```
 
 List of unique 16S sequences headers:
-```
+```sh
 grep "^>" 2-unique_16S.fasta | sed 's/>//' > 3-unique_16S_header_list.txt
 ```
 
 Putting together all QIIME annotations from the 3 datasets:
-```
+```sh
 cat ../*/5-annotation_files/2-16S_amoa_tax_qiime.txt > 4-16S_amoa_tax_qiime_3runs.txt
 ```
 
@@ -282,7 +282,7 @@ m <- merge(header, annot2)
 write.table(m, "5-unique_16S_amoa_tax_qiime_3runs.txt", quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
 ```
 Finally, concatenate all *amoA* sequences from the 3 dataset:
-```
+```sh
 cat ../*/3-amoa_seqs/1-amoa.fasta > 6_amoa_seqs_3runs.fasta
 ```
 
