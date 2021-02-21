@@ -72,7 +72,7 @@ makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -
 
 Sequences were directly downloaded from this website: https://www.ncbi.nlm.nih.gov/nuccore, using as search query `(Archaea[Organism]) AND 2000:99999999999999[Sequence Length]`. The ouput was then dowloaded using `Send to file > FASTA format`. The sequences were downloaded on the 31st Oct. 2020. 
 
-The fasta file was save as `1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta`. This file containes 335,202 sequences.
+The fasta file was save as `1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta`. This file contains 335,202 sequences.
 
 ```sh
 grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
@@ -81,7 +81,7 @@ grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
 
 ### RefSeq archaeal genomes
 
-The archaeal RefSeq genomes were downloaded with ncbi-genome-download on the 7th of November 2020, using this commande line:
+The archaeal RefSeq genomes were downloaded with ncbi-genome-download on the 7th of November 2020, using this command line:
 
 ```sh
 mkdir 2-refseq_arch_genomes/
@@ -101,7 +101,7 @@ for file in 1-raw_data/arch_genomes_refseq/refseq/archaea/GCF_*/*.fna.gz; do
 	gzip -d 1-raw_data/arch_genomes_refseq_unarchived/${id}.fna.gz
 done
 ```
-How many genomes were dowloaded?
+How many genomes were downloaded?
 ```sh
 ls -l 1-raw_data/arch_genomes_refseq_unarchived/ | wc -l
 > 1106
@@ -109,7 +109,7 @@ ls -l 1-raw_data/arch_genomes_refseq_unarchived/ | wc -l
 
 ### GeneBank archaeal genomes
 
-GeneBank genomes were downloaded follwing the instructions  of this github repository : https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI. The genomes were downloaded on the 7th of November 2020 using these command lines:
+GeneBank genomes were downloaded following the instructions of this github repository : https://github.com/rprops/MetaG_analysis_workflow/wiki/09.-Download-genomes-NCBI-EDI. The genomes were downloaded on the 7th of November 2020 using these command lines:
 
 Create folders:
 ```sh
@@ -128,7 +128,7 @@ How many genomes are there?
 wc -l 1-raw_data/1-assembly_summary.txt
 > 5738
 ```
-Get the ftp links
+Get the ftp links:
 ```sh
 less 1-raw_data/1-assembly_summary.txt | cut -f20 > 1-raw_data/2-ftp_links.txt
 ```
@@ -146,14 +146,14 @@ ls -lh 1-raw_data/3-archaeal_genomes/ | grep -v cds | grep -v rna |wc -l
 
 ## Detailed script
 
-Then, for each dataset, the following script was applied. Each command must be executed from the dataset folder `1-ncbi_arch_2000/`, `2-refseq_arch_genomes/`, or `3-genbank_arch_genomes/`.
+Then, for each dataset, the following script was applied. Each command must be executed from the respective dataset folder `1-ncbi_arch_2000/`, `2-refseq_arch_genomes/`, or `3-genbank_arch_genomes/`.
 The script presented below is the one that was specifically used to analyse RefSeq genomes. The two other datasets were analysed with script slightly different. All 3 scripts can be found in this [folder](scripts/). They are labeled `script1*.sh` and are actullay not executable.
 
 ### Blast amoa genes
 ```sh
 mkdir 2-amoa_blast
 ```
-This script blast each genome in the folder to the archaeal amoA db and keeps the best hit. It adds to the last line of the blase output file the path to the genome.
+This script blasts each genome in the folder to the archaeal amoA database and keeps the best hit. It adds to the last line of the blase output file the path to the genome.
 
 ```sh
 for file in 1-raw_data/arch_genomes_refseq_unarchived/*.fna; do
@@ -168,11 +168,11 @@ cat 2-amoa_blast/2-* > 2-amoa_blast/3-cat_blast.txt
 rm 2-amoa_blast/1-*
 rm 2-amoa_blast/2-*
 ```
-Extract list of genomes that harbor an amoA:
+Extract the list of genomes that harbor an *amoA* gene:
 ```sh
 less 2-amoa_blast/3-cat_blast.txt | cut -f13 | sort -u > 2-amoa_blast/4-amoa_genome_list.txt
 ```
-### Get amoA sequences
+### Get *amoA* sequences
 ```sh
 mkdir 3-amoa_seqs
 ```
@@ -245,7 +245,7 @@ One hase to run `script2_amoa_16S_from_contigs.R` for merging data from the NCBI
 
 ### Concatenating outputs from the 3 datasets
 
-Putting together all 16S from the 3 datasets:
+Putting together all 16S sequences from the 3 datasets:
 ```sh
 mkdir 4-concatenated_runs/
 cd 4-concatenated_runs/
