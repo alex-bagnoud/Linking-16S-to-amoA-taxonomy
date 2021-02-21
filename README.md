@@ -290,7 +290,7 @@ cat ../*/3-amoa_seqs/1-amoa.fasta > 6_amoa_seqs_3runs.fasta
 
 ## How to annotate your Thaumarchaeota 16S rRNA sequences with this database?
 
-The relevant output files of this pipeline can be accessed in the [folder](4-concatenated_runs/):
+The relevant output files of this pipeline can be accessed in this [folder](4-concatenated_runs/):
 * `2-unique_16S.fasta` contains the unique (i.e. dereplicated) 16S rRNA sequences
 * `5-unique_16S_amoa_tax_qiime_3runs.txt` contains the corresponding *amoA* annotations, based on Alves *et al*. database.
 * `6_amoa_seqs_3runs.fasta` contains the corresponding *amoA* sequencing. This file was not dereplicated.
