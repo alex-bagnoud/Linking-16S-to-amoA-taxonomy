@@ -61,16 +61,31 @@ Here is the list of the softwares used for this pipeline. The versions that were
 
 #### Alves *et al*. database
 
+The *amoA* database was downoladed from the supplementary informatio of Alves *et al*. (https://doi.org/10.1038/s41467-018-03861-1). Supplementary files 1 et 3 were downloaded and unzipped. The files `AamoA.db_an96.aln_tax.annotated.fasta` (supplementary data 1), `AamoA.db_nr.aln.fasta`, and `AamoA.db_nr.aln_taxonomy_qiime.txt` (in the `AamoA.db_nr_qiime.mothur/` folder of supplementary data 3) were moved to `0-databases/`.
+
+A BLAST database was then made using BLAST+ using this command line
+```
+makeblastdb -dbtype nucl -in 0-databases/AamoA.db_an96.aln_tax.annotated.fasta -out 0-databases/AamoA.db_an96.aln_tax.annotated
+```
+
 #### NCBI nucleotides sequences
 
 Sequences were directly downloaded from this website: https://www.ncbi.nlm.nih.gov/nuccore, using as search query `(Archaea[Organism]) AND 2000:99999999999999[Sequence Length]`. The ouput was then dowloaded using `Send to file > FASTA format`. The sequences were downloaded on the 31st Oct. 2020. 
 
-Save it as "1-raw_data/ncbi_nucl_arch_min2000.fasta"
+The fasta file was save as `1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta`. This file containes 335,202 sequences.
 
-grep "^>" 1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
-#335202
+```
+grep "^>" 1-ncbi_arch_2000/1-raw_data/ncbi_nucl_arch_min2000.fasta | wc -l
+> 335202
+```
 
 #### RefSeq archaeal genomes
+
+```
+ncbi-genome-download --format fasta --assembly-level all --section refseq --output-folder 1-raw_data/arch_genomes_refseq archaea
+```
+
+
 
 #### GeneBank archaeal genomes
 
