@@ -1,3 +1,6 @@
+# This 'sh' file is not executable
+# Please copy and paste each of the command in a UNIX terminal.
+
 # Download the amoA database :
 # Download and unzip Supplementary Data 1 and 3 of this article https://doi.org/10.1038/s41467-018-03861-1
 # Move files AamoA.db_an96.aln_tax.annotated.fasta (supplementary data 1),
