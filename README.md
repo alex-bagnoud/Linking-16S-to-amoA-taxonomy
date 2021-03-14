@@ -18,7 +18,7 @@ Three different datasets were used here:
 
 1. All [NCBI](https://www.ncbi.nlm.nih.gov/) sequences annotated as Archaea and that are at least 2000 bp long.
 2. All the [RefSeq](https://www.ncbi.nlm.nih.gov/refseq/) archaeal genomes.
-3. All the [GeneBank](https://www.ncbi.nlm.nih.gov/genbank/) archaeal genomes.
+3. All the [GeneBank](https://www.ncbi.nlm.nih.gov/genbank/) archaeal genomes (which contains MAGs, metagenomes-assembled genomes).
 
 Each dataset was analysed separately.
 
